@@ -2,7 +2,7 @@ import Node from './Node.js';
 
 //Note: this is a minimalistic implementation of a BST
 
-class BinaryTree {
+export default class BinaryTree {
     constructor() {
         this.root = null;
     }
@@ -74,5 +74,3 @@ class BinaryTree {
 
     }
 }
-
-export default BinaryTree;

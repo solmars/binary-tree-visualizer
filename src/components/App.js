@@ -2,6 +2,7 @@ import Header from './Header';
 import Content from './Content';
 import Footer from './Footer';
 import BinaryTree from '../models/BinaryTree';
+import AvlTree from '../models/AvlTree';
 
 function App() {
   createBinaryTree();
@@ -16,12 +17,15 @@ function App() {
 function createBinaryTree() {
   const bst = new BinaryTree();
   bst.insert(5);
-  bst.insert(4);
-  bst.insert(3);
-  bst.insert(6);
-  bst.insert(2);
+  const avl = new AvlTree();
 
-  console.log(bst);
-  console.log(bst.height());
+  for(let i=0;i<100;i++) {
+    let random = parseInt(Math.random() * 1000);
+    avl.insert(random);
+  }
+
+  console.log(avl);
+  console.log(avl.height());
+  console.log(avl.find(2));
 }
 export default App;
