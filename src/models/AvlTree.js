@@ -20,7 +20,7 @@ export default class AVLTree extends BinarySearchTree {
     rightRotation(node) {
 
         let leftNode = node.left;
-        node.left  =leftNode.right;
+        node.left = leftNode.right;
         leftNode.right = node;
         return leftNode;
     }
@@ -75,16 +75,48 @@ export default class AVLTree extends BinarySearchTree {
             return new Node(element);
         }
         if (node.element !== element) {
-            if (element - node.element > 0) {
+            if (element > node.element) {
 
                 node.right = this.insertNode(element, node.right);
                 node = this.balanceNode(node);
             }
-            if (element - node.element < 0) {
+            if (element < node.element) {
                 node.left = this.insertNode(element, node.left);
                 node = this.balanceNode(node);
             }
         }
         return node;
     }
+    remove(element) {
+        this.root = this.removeNode(element, this.root);
+    }
+
+    removeNode(element, node) {
+        if (node === null) {
+            return null;
+        }
+        if (node.element === element) {
+            if (node.left == null && node.right == null) {
+                return null;
+            }
+            if (node.left == null) {
+                return node.right;
+            }
+            if (node.right == null) {
+                return node.left;
+            }
+            let smallElem = this.smallestElement(node.right);
+            node.element = smallElem;
+            node.right = this.removeNode(smallElem, node.right);
+            node = this.balanceNode(node);
+        } else if (node.element > element) {
+            node.left = this.removeNode(element, node.left);
+            node = this.balanceNode(node);
+        } else {
+            node.right = this.removeNode(element, node.right);
+            node = this.balanceNode(node);
+        }
+        return node;
+    }
+
 }

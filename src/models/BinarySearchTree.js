@@ -34,6 +34,46 @@ export default class BinarySearchTree {
         }
         return node;
     }
+    remove(element) {
+        this.root = this.removeNode(element, this.root);
+    }
+
+    removeNode(element, node) {
+
+        if (node === null) {
+            return null; 
+        }
+
+        if (element ===  node.element) {
+            if (node.left === null && node.right == null) { //leaf
+                return null;
+            }
+            if (node.left == null) {   // only right child
+                return node.right;
+            }
+            if (node.right == null) {  // only left child
+                return node.left;
+            }
+            let min = this.smallestElement(node.right);
+            node.element = min;
+            node.right = this.removeNode(min, node.right);
+        } else if (element  < node.element) {
+            node.left = this.removeNode(element, node.left);
+        } else {
+            node.right = this.removeNode(element, node.right);
+        }
+        return node;
+    }
+    smallestElement() {
+        if (this.root === null) {
+            return null;
+        }
+        let node = this.root;
+        while (node.left != null) {
+            node = node.left;
+        }
+        return node.element;
+    }
     height() {
         if (this.root === null) {
             return -1;
@@ -72,5 +112,19 @@ export default class BinarySearchTree {
             return this.findNode(elementToFind, node.right);
         }
     }
-    
+    inOrder() {
+       let snapshot = [];
+        if (this.root != null) {
+            this.inOrderSubtree(this.root, snapshot);   // fill the snapshot recursively
+        }
+        return snapshot;
+    }
+    inOrderSubtree(node, snapshot) {
+        if (node === null) {
+            return;
+        }
+        this.inOrderSubtree(node.left, snapshot);
+        snapshot.push(node.element);
+        this.inOrderSubtree(node.right, snapshot);
+    }
 }
