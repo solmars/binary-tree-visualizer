@@ -1,8 +1,8 @@
 import Node from './Node.js';
-import BinaryTree from './BinaryTree.js';
+import BinarySearchTree from './BinarySearchTree.js';
 
 
-export default class AVLTree extends BinaryTree {
+export default class AVLTree extends BinarySearchTree {
     balanceFactor(node) {
 
         let lHeight = 0;

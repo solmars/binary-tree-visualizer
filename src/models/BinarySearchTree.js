@@ -2,7 +2,7 @@ import Node from './Node.js';
 
 //Note: this is a minimalistic implementation of a BST
 
-export default class BinaryTree {
+export default class BinarySearchTree {
     constructor() {
         this.root = null;
     }
@@ -35,13 +35,13 @@ export default class BinaryTree {
         return node;
     }
     height() {
-        if(this.root===null) {
+        if (this.root === null) {
             return -1;
         }
         return this.calculateHeight(this.root);
     }
     calculateHeight(node) {
-        if(node===null) {
+        if (node === null) {
             return 0;
         }
         let lHeight = this.calculateHeight(node.left);
@@ -52,25 +52,25 @@ export default class BinaryTree {
     }
 
     find(elementToFind) {
-        if(this.root===null) {
+        if (this.root === null) {
             return null;
         }
-        return this.findNode(elementToFind,this.root);
-   
-    }
-    findNode(elementToFind,node) {
-        if(node === null) {
-            return "couldn't find specified node";
-        }
-        if(elementToFind === node.element) {
-            return node;
-        }
-        if(node.element > elementToFind) {
-            return this.findNode(elementToFind,node.left);
-        }
-        else {
-            return this.findNode(elementToFind,node.right);
-        }
+        return this.findNode(elementToFind, this.root);
 
     }
+    findNode(elementToFind, node) {
+        if (node === null) {
+            return "couldn't find specified node";
+        }
+        if (elementToFind === node.element) {
+            return node;
+        }
+        if (node.element > elementToFind) {
+            return this.findNode(elementToFind, node.left);
+        }
+        else {
+            return this.findNode(elementToFind, node.right);
+        }
+    }
+    
 }
