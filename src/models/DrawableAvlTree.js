@@ -1,6 +1,6 @@
 //import Node from './Node.js';
 import AvlTree from './AvlTree.js';
-
+import * as configs from './Config.js';
 
 export default class DrawableAvlTree extends AvlTree {
 
@@ -11,40 +11,30 @@ export default class DrawableAvlTree extends AvlTree {
         this.canvasWidth = 0;
         this.canvasHeight = 0;
     }
-
     draw(ctx) {
         if (this.root === null) {
             return;
         }
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
         const treeHeight = this.height() + 1;
-        this.heightIncrease = ctx.canvas.height / (treeHeight - 1);
 
-        // ctx.canvas.width = this.nodeRadius * 2 * Math.pow(2, treeHeight);
-        // ctx.canvas.height = "" + this.heightIncrease * treeHeight;
-        // this.canvasWidth = ctx.canvas.width;
-        // this.canvasHeight = ctx.canvas.height;
+        const ratio = ctx.canvas.width/ctx.canvas.height;
+        const settleCanvasWidth = (treeHeight) => {
+            const shouldBe = this.nodeRadius * 2 * Math.pow(2,treeHeight -1);
+            return shouldBe < configs.getCanvasMaximumWidth() ?  shouldBe : configs.getCanvasMaximumWidth();    
+        }
+        const settleCanvasHeight = (width,ratio) => {
+            const shouldBe = width/ratio;
+            return shouldBe < configs.getCanvasMaximumHeight()
+            ?  shouldBe 
+            : configs.getCanvasMaximumHeight();    
+        }
 
-
-        // this.canvasWidth = ctx.canvas.width;
-        // this.canvasHeight = ctx.canvas.height;
-        // ctx.canvas.width = this.nodeRadius * 2 * Math.pow(2, treeHeight);
-        // ctx.canvas.height = "" + this.heightIncrease * treeHeight;
-
-        ctx.canvas.style.width = "" + this.nodeRadius * 2 * Math.pow(2, treeHeight);
-        ctx.canvas.style.height = "" + this.heightIncrease * treeHeight;
+        ctx.canvas.width =  settleCanvasWidth(treeHeight);  // calculate this better and its fine
+        ctx.canvas.height =  settleCanvasHeight(ctx.canvas.width,ratio);
         this.canvasWidth = ctx.canvas.width;
         this.canvasHeight = ctx.canvas.height;
-
-
-
-        // this.canvasWidth = ctx.canvas.width;
-        // this.canvasHeight = ctx.canvas.height;
-        // ctx.canvas.style.width = "" + this.nodeRadius * 2 * Math.pow(2, treeHeight);
-        // ctx.canvas.style.height = "" + this.heightIncrease * treeHeight;
-
-
-
+        this.heightIncrease = Math.floor(ctx.canvas.height / (treeHeight - 1));
 
         this.drawTree(this.root, ctx, this.canvasWidth / 2, this.canvasHeight - this.canvasHeight + 20, 0);
     }

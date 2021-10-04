@@ -23,9 +23,9 @@ body {
   font-size: calc(9px + 1vmin);
   color: white;
   display: flex;
-
+  flex-direction:row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
 
 }
 main {

@@ -7,6 +7,19 @@ export default class BinarySearchTree {
         this.root = null;
     }
 
+    size() {
+        if (this.root == null) {
+            return 0;
+        }
+        return this.calcSize(this.root);
+    }
+
+    calcSize(node) {
+        if (node === null) {
+            return 0;
+        }
+        return 1 + this.calcSize(node.left) + this.calcSize(node.right);
+    }
     insert(element) {
         if (!element) {
             return;
@@ -16,7 +29,6 @@ export default class BinarySearchTree {
             return;
         }
         this.insertNode(new Node(element), this.root);
-
     }
     insertNode(newNode, node) {
         if (newNode.element < node.element) {
@@ -41,10 +53,10 @@ export default class BinarySearchTree {
     removeNode(element, node) {
 
         if (node === null) {
-            return null; 
+            return null;
         }
 
-        if (element ===  node.element) {
+        if (element === node.element) {
             if (node.left === null && node.right == null) { //leaf
                 return null;
             }
@@ -57,7 +69,7 @@ export default class BinarySearchTree {
             let min = this.smallestElement(node.right);
             node.element = min;
             node.right = this.removeNode(min, node.right);
-        } else if (element  < node.element) {
+        } else if (element < node.element) {
             node.left = this.removeNode(element, node.left);
         } else {
             node.right = this.removeNode(element, node.right);
@@ -74,6 +86,16 @@ export default class BinarySearchTree {
         }
         return node.element;
     }
+    smallestElementOfSubtree(node) {
+        if (this.node === null) {
+            return null;
+        }
+        while (node.left != null) {
+            node = node.left;
+        }
+        return node.element;
+    }
+
     height() {
         if (this.root === null) {
             return -1;
@@ -100,7 +122,7 @@ export default class BinarySearchTree {
     }
     findNode(elementToFind, node) {
         if (node === null) {
-            return "couldn't find specified node";
+            return null;
         }
         if (elementToFind === node.element) {
             return node;
@@ -113,7 +135,7 @@ export default class BinarySearchTree {
         }
     }
     inOrder() {
-       let snapshot = [];
+        let snapshot = [];
         if (this.root != null) {
             this.inOrderSubtree(this.root, snapshot);   // fill the snapshot recursively
         }
