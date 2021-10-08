@@ -2,7 +2,8 @@
 function Footer() {
     return (
         <footer>
-            <a href ="https://github.com/solmars">https://github.com/solmars</a>
+            <h3>Binary tree visualizer-</h3>
+            <a href="https://github.com/solmars">https://github.com/solmars</a>
         </footer>
     )
 }

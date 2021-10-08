@@ -1,11 +1,11 @@
 import Canvas from './Canvas.js';
+import React from 'react';
 
 
-export default function Content() {
-
-
+const  Content = React.forwardRef((props, canvasRef) =>{
   return (<main>
-    <Canvas/>
+    <Canvas ref={canvasRef} />
   </main>);
-}
+});
 
+export default Content;

@@ -9,11 +9,13 @@ export const AVLContext = React.createContext();
 
 function App() {
   const avl = new DrawableAvlTree();
+  const canvasRef = React.useRef(null);
+
   return (
     <div className="App">
       <AVLContext.Provider value={avl}>
-        <Header/>
-        <Content />
+        <Header ref = {canvasRef}/>
+        <Content ref = {canvasRef}/>
         <Footer />
       </AVLContext.Provider>
 

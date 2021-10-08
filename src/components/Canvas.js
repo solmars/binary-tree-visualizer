@@ -1,14 +1,11 @@
-import React, { useRef, useEffect, useContext } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { AVLContext } from './App.js';
 
 
-export default function Canvas() {
-
+const Canvas = React.forwardRef((props, ref) => {
   let avl = useContext(AVLContext);
-
-  const canvasRef = useRef(null);
   useEffect(() => {
-    const canvas = canvasRef.current;
+    const canvas = ref.current;
     const context = canvas.getContext('2d');
     const render = () => {
       avl.draw(context);
@@ -24,15 +21,15 @@ export default function Canvas() {
     }
     handleResize();
     fillBinaryTree(avl);
-    
+
     render();
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
     }
-  }, [avl]);
-  return <canvas ref={canvasRef} />
-}
+  }, [avl, ref]);
+  return <canvas ref={ref} />
+});
 function fillBinaryTree(avl) {
   // it does double when outside of useEffect, why? print doesn't show it.
   for (let i = 0; i < 20; i++) {
@@ -41,3 +38,4 @@ function fillBinaryTree(avl) {
   }
 }
 
+export default Canvas;
