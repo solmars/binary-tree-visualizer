@@ -52,7 +52,8 @@ function visualize(node, ctx, x, y, pathNodes) {
     ctx.stroke();
     fillNodeCircle(ctx, node, pathNodes);
     ctx.closePath();
-    ctx.strokeText(node.element, x - 10, y + 5);
+    ctx.textAlign = "center";
+    ctx.strokeText(node.element, x, y + 5);
     if (node.left !== null) {
         let newX = node.left.canvasPos.x;
         let newY = node.left.canvasPos.y;
@@ -80,7 +81,7 @@ function fillNodeCircle(ctx, currNode, pathNodes) {
         return;
     }
     if (nodeInPath.type === TYPES.SOURCE_OR_DESTINATION) {
-        ctx.fillStyle = configs.getCanvasNodeFoundColor();
+        ctx.fillStyle = configs.getCanvasNodeSelectedColor();
         ctx.fill();
     }
     else if (nodeInPath.type === TYPES.IN_PATH) {

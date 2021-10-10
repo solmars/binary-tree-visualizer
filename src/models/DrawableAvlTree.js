@@ -1,5 +1,7 @@
 //import Node from './Node.js';
 import AvlTree from './AvlTree.js';
+import DrawableNode from './DrawableNode.js';
+
 import * as configs from './Config.js';
 
 export default class DrawableAvlTree extends AvlTree {
@@ -10,8 +12,23 @@ export default class DrawableAvlTree extends AvlTree {
         this.nodeRadius = nodeRadius;
         this.canvasWidth = 0;
         this.canvasHeight = 0;
+        this.selectedNodes = []; // we'll store the info about selected nodes here.
     }
-    drawScaled(context, scale, translatePos) {
+    insert(element) {
+        this.root = this.insertNode(element, this.root);
+    }
+
+    insertNode(element, node) {
+        if (node === null) {
+            return new DrawableNode(element);
+        } else if (node.element > element) {
+            node.left = this.insertNode(element, node.left);
+        } else if (node.element < element) {
+            node.right = this.insertNode(element, node.right);
+        }
+        return this.balanceNode(node);
+    }
+/*     drawScaled(context, scale, translatePos) {
 
         context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 
@@ -24,7 +41,7 @@ export default class DrawableAvlTree extends AvlTree {
         context.stroke();
         context.restore();
     }
-    draw(ctx) {
+ */    draw(ctx) {
         if (this.root === null) {
             return;
         }
@@ -43,13 +60,13 @@ export default class DrawableAvlTree extends AvlTree {
                 : configs.getCanvasMaximumHeight();
         }
 
-        ctx.canvas.width = settleCanvasWidth(treeHeight);  // calculate this better and its fine
+        ctx.canvas.width = settleCanvasWidth(treeHeight);
         ctx.canvas.height = settleCanvasHeight(ctx.canvas.width, ratio);
         this.canvasWidth = ctx.canvas.width;
         this.canvasHeight = ctx.canvas.height;
         this.heightIncrease = Math.floor(ctx.canvas.height / (treeHeight - 1));
 
-        this.drawTree(this.root, ctx, this.canvasWidth / 2, this.canvasHeight - this.canvasHeight + 20, 0);
+        this.drawTree(this.root, ctx, this.canvasWidth / 2, this.canvasHeight - this.canvasHeight + configs.getCanvasNodeRadius(), 0);
     }
     getPosition(level, x, y, isLeft = false) {
         return {
@@ -62,11 +79,18 @@ export default class DrawableAvlTree extends AvlTree {
         ctx.font = configs.getCanvasDrawFont();
         node.canvasPos.x = x;
         node.canvasPos.y = y;
+        node.radius = this.nodeRadius;
         ctx.beginPath();
         ctx.arc(x, y, this.nodeRadius, 0, 2 * Math.PI);
         ctx.stroke();
+        if (node.isSelected) {
+            ctx.fillStyle = configs.getCanvasNodeSelectedColor();
+            ctx.fill();
+        }
         ctx.closePath();
-        ctx.strokeText(node.element, x - 10, y + 5);
+        ctx.textAlign = "center";
+        ctx.strokeText(node.element, x, y + 5);
+
         level++;
         if (node.left !== null) {
             let newPos = this.getPosition(level, x, y, true);
@@ -83,8 +107,24 @@ export default class DrawableAvlTree extends AvlTree {
             this.drawTree(node.right, ctx, newX, newY, level);
         }
     }
+    getNodeInPosition(x, y, node) {
+        if (node === null) {
+            return null;
+        }
+        if (node.canvasPos.x < x && !node.isInPosition(x, y)) {
+            return this.getNodeInPosition(x, y, node.right);
+        }
+        else if (node.canvasPos.x > x && !node.isInPosition(x, y)) {
+            return this.getNodeInPosition(x, y, node.left);
+        }
+        else {
+            if (node.isInPosition(x, y)) {
+                return node;
+            }
+        }
+    }
 }
-function strokeLine(ctx, initialX, initialY, finalX, finalY,radius=configs.getCanvasNodeRadius()) {
+function strokeLine(ctx, initialX, initialY, finalX, finalY, radius = configs.getCanvasNodeRadius()) {
     ctx.beginPath();
     ctx.moveTo(initialX, initialY + radius);
     ctx.lineTo(finalX, finalY - radius)

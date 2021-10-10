@@ -134,6 +134,23 @@ export default class BinarySearchTree {
             return this.findNode(elementToFind, node.right);
         }
     }
+    inOrderNodes() {
+        let snapshot = [];
+        if (this.root != null) {
+            this.inOrderNodeSubtree(this.root, snapshot);   // fill the snapshot recursively
+        }
+        return snapshot;
+
+    }
+    inOrderNodeSubtree(node,snapshot) {
+        if (node === null) {
+            return;
+        }
+        this.inOrderNodeSubtree(node.left, snapshot);
+        snapshot.push(node);
+        this.inOrderNodeSubtree(node.right, snapshot);
+
+    }
     inOrder() {
         let snapshot = [];
         if (this.root != null) {

@@ -27,8 +27,8 @@ export function getCanvasNodeRadius() {
 export function getPathNodeColor() {
     return constants.NODE_PATH_COLOR;
 } 
-export function getCanvasNodeFoundColor() {
-    return constants.NODE_FOUND_COLOR;
+export function getCanvasNodeSelectedColor() {
+    return constants.NODE_SELECTED_COLOR;
 }
 export function getPathCurrentNodeColor() {
     return constants.NODE_CURRENT_COLOR;

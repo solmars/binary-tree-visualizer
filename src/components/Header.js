@@ -49,7 +49,14 @@ const Header = React.forwardRef((props, canvasRef) => {
      */
     function runAlgorithm() {
         const ctx = canvasRef.current.getContext('2d');
-        visualizer.visualizeFind(avl,ctx,avl.root.left.left.left.left.element);
+        //TODO: dropbox here
+        if(avl.selectedNodes.length ===0) { // for now, but remember to add DFS and stuff.
+            return;
+        }
+        visualizer.visualizeFind(avl,ctx,avl.selectedNodes[0].element);
+        //reset selected
+        avl.inOrderNodes().filter(node =>  node.isSelected).forEach(node => node.changeSelectStatus());
+        avl.selectedNodes = [];
     }
     function zoomIn() {
  /*        const canvas = canvasRef.current;
@@ -90,7 +97,7 @@ const Header = React.forwardRef((props, canvasRef) => {
     return (
         <header className="App-Header">
             <div style = {algoDisplay}>
-                <h1>Algorithms</h1>
+                <h1>Shortest path</h1>
                 <button className="btn" onClick={() => runAlgorithm()}>Run algorithm</button>
 
             </div>

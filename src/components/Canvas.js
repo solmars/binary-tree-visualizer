@@ -6,10 +6,31 @@ const Canvas = React.forwardRef((props, ref) => {
   let avl = useContext(AVLContext);
   useEffect(() => {
     const canvas = ref.current;
-    const context = canvas.getContext('2d');
     const render = () => {
       avl.draw(context);
     }
+
+    const clickCanvasPos = (e) => {
+      let rect = canvas.getBoundingClientRect();
+      let actualWidth = rect.width - rect.x;
+      let actualHeight = rect.height;
+      let clickedX = e.clientX - rect.left;
+      let clickedY = e.clientY - rect.top;
+      let canvasPosX = clickedX * (canvas.width / actualWidth);
+      let canvasPosY = clickedY * (canvas.height / actualHeight);
+      const node = avl.getNodeInPosition(canvasPosX, canvasPosY, avl.root);
+      if (node) {
+        node.changeSelectStatus();
+        if (node.isSelected) {
+          avl.selectedNodes.push(node);
+        }
+        else {
+          avl.selectedNodes = avl.selectedNodes.filter(dNode => dNode !== node);
+        }
+        render();
+      }
+    };
+    const context = canvas.getContext('2d');
     const handleResize = () => {
       var parent = canvas.parentNode,
         styles = getComputedStyle(parent),
@@ -24,8 +45,11 @@ const Canvas = React.forwardRef((props, ref) => {
 
     render();
     window.addEventListener('resize', handleResize);
+    canvas.addEventListener('click', clickCanvasPos);
+
     return () => {
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('click', clickCanvasPos)
     }
   }, [avl, ref]);
   return <canvas ref={ref} />
