@@ -5,7 +5,7 @@ import { NodeInPath, TYPES } from './NodeInPath.js';
 //Assumes node positions are set
 
 
-export function visualizeFind(avl, ctx, elementToFind, speed = 500) {
+export function visualizeFind(avl, ctx, elementToFind, speed) {
     if (avl.root === null) {
         return null;
     }
@@ -37,13 +37,13 @@ function animatePath(avl, ctx, pathNodes, current, speed) {
     visualizePath(avl, ctx, oneByOneArray);
     setTimeout(function () {
         animatePath(avl, ctx, pathNodes, ++current, speed);
-    }, speed);
+    }, speed[0]);
 
 }
 function visualizePath(avl, ctx, pathNodes = []) {
     if (pathNodes.length === 0) return;
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    visualize(avl.root, ctx, Math.floor(ctx.canvas.width / 2), ctx.canvas.height - ctx.canvas.height + 20, pathNodes);
+    visualize(avl.root, ctx, Math.floor(ctx.canvas.width / 2), ctx.canvas.height - ctx.canvas.height + configs.getCanvasNodeRadius(), pathNodes);
 }
 function visualize(node, ctx, x, y, pathNodes) {
     ctx.font = configs.getCanvasDrawFont();

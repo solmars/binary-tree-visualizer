@@ -8,6 +8,10 @@ import * as visualizer from '../View/Visualizer.js';
 const Header = React.forwardRef((props, canvasRef) => {
     let avl = useContext(AVLContext);
     const MAX_ITERATIONS = configs.getMaximumNodes() - configs.getMinimumNodes() + 20;
+    const speed = [configs.getMinimumSpeed()];
+    speed.length =1; // speed as an array, limited to 1, so we are passing by reference, allowing speed to be set in real time
+    Object.defineProperty(speed, 'length', {writable:false});
+
     const handleNodeOnChange = (value) => {
         let iterations = 0; // failsafe
         while (avl.size() < value && iterations < MAX_ITERATIONS) {
@@ -22,8 +26,8 @@ const Header = React.forwardRef((props, canvasRef) => {
         }
         window.dispatchEvent(new Event('resize')); //useEffect refuses to work, and I don't want to write a custom one for objects, so this will do.
     }
-    const handleSpeedOnChange = () => {
-        alert('not implemented yet');
+    const handleSpeedOnChange = (value) => {
+        speed[0] = value;
     }
     const nodeSliderProps = {
         min_value: configs.getMinimumNodes(),
@@ -53,7 +57,7 @@ const Header = React.forwardRef((props, canvasRef) => {
         if(avl.selectedNodes.length ===0) { // for now, but remember to add DFS and stuff.
             return;
         }
-        visualizer.visualizeFind(avl,ctx,avl.selectedNodes[0].element);
+        visualizer.visualizeFind(avl,ctx,avl.selectedNodes[0].element,speed);
         //reset selected
         avl.inOrderNodes().filter(node =>  node.isSelected).forEach(node => node.changeSelectStatus());
         avl.selectedNodes = [];
