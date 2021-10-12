@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/binary-tree-visualizer/static/css/main.0f536664.chunk.css",
-    "main.js": "/binary-tree-visualizer/static/js/main.09b5d2a8.chunk.js",
-    "main.js.map": "/binary-tree-visualizer/static/js/main.09b5d2a8.chunk.js.map",
+    "main.css": "/binary-tree-visualizer/static/css/main.dcfcc10c.chunk.css",
+    "main.js": "/binary-tree-visualizer/static/js/main.0e16ac66.chunk.js",
+    "main.js.map": "/binary-tree-visualizer/static/js/main.0e16ac66.chunk.js.map",
     "runtime-main.js": "/binary-tree-visualizer/static/js/runtime-main.65d7a00a.js",
     "runtime-main.js.map": "/binary-tree-visualizer/static/js/runtime-main.65d7a00a.js.map",
-    "static/js/2.71c8ce12.chunk.js": "/binary-tree-visualizer/static/js/2.71c8ce12.chunk.js",
-    "static/js/2.71c8ce12.chunk.js.map": "/binary-tree-visualizer/static/js/2.71c8ce12.chunk.js.map",
+    "static/js/2.25b3eda2.chunk.js": "/binary-tree-visualizer/static/js/2.25b3eda2.chunk.js",
+    "static/js/2.25b3eda2.chunk.js.map": "/binary-tree-visualizer/static/js/2.25b3eda2.chunk.js.map",
     "index.html": "/binary-tree-visualizer/index.html",
-    "static/css/main.0f536664.chunk.css.map": "/binary-tree-visualizer/static/css/main.0f536664.chunk.css.map",
-    "static/js/2.71c8ce12.chunk.js.LICENSE.txt": "/binary-tree-visualizer/static/js/2.71c8ce12.chunk.js.LICENSE.txt"
+    "static/css/main.dcfcc10c.chunk.css.map": "/binary-tree-visualizer/static/css/main.dcfcc10c.chunk.css.map",
+    "static/js/2.25b3eda2.chunk.js.LICENSE.txt": "/binary-tree-visualizer/static/js/2.25b3eda2.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.65d7a00a.js",
-    "static/js/2.71c8ce12.chunk.js",
-    "static/css/main.0f536664.chunk.css",
-    "static/js/main.09b5d2a8.chunk.js"
+    "static/js/2.25b3eda2.chunk.js",
+    "static/css/main.dcfcc10c.chunk.css",
+    "static/js/main.0e16ac66.chunk.js"
   ]
 }
