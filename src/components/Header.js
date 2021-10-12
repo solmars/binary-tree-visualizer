@@ -4,13 +4,16 @@ import { AVLContext } from './App.js';
 import { useContext } from 'react';
 import React from 'react';
 import * as visualizer from '../View/Visualizer.js';
+import Dropdown from "./Dropdown";
 
 const Header = React.forwardRef((props, canvasRef) => {
-    let avl = useContext(AVLContext);
+    const avl = useContext(AVLContext);
     const MAX_ITERATIONS = configs.getMaximumNodes() - configs.getMinimumNodes() + 20;
     const speed = [configs.getMinimumSpeed()];
-    speed.length =1; // speed as an array, limited to 1, so we are passing by reference, allowing speed to be set in real time
-    Object.defineProperty(speed, 'length', {writable:false});
+    speed.length = 1; // speed as an array, limited to 1, so we are passing by reference, allowing speed to be set in real time
+    Object.defineProperty(speed, 'length', { writable: false });
+    let currentAlgorithm = 'DEFAULT';
+
 
     const handleNodeOnChange = (value) => {
         let iterations = 0; // failsafe
@@ -41,67 +44,72 @@ const Header = React.forwardRef((props, canvasRef) => {
         step: 20,
         onChange: handleSpeedOnChange
     }
-    /*     var scale = 1.0;
-        var scaleMultiplier = 0.8;
-        var startDragOffset = {};
-        var mouseDown = false;
-    
-        var translatePos = {
-            x: 1536 / 2,
-            y: 768 / 2
-        };
-     */
     function runAlgorithm() {
-        const ctx = canvasRef.current.getContext('2d');
-        //TODO: dropbox here
-        if(avl.selectedNodes.length ===0) { // for now, but remember to add DFS and stuff.
+        if (currentAlgorithm === 'DEFAULT') {
+            alert('Please select an algorithm!');
             return;
         }
-        visualizer.visualizeFind(avl,ctx,avl.selectedNodes[0].element,speed);
-        //reset selected
-        avl.inOrderNodes().filter(node =>  node.isSelected).forEach(node => node.changeSelectStatus());
-        avl.selectedNodes = [];
-    }
-    function zoomIn() {
- /*        const canvas = canvasRef.current;
+        const ctx = canvasRef.current.getContext('2d');
+        switch (currentAlgorithm) {
+            case '1':
+                if (avl.selectedNodes.length === 0) {
+                    alert('Select atleast one node!');
+                    return;
+                }
+                const height = avl.height();
+                const loopFind = (i) => {
+                    if (i < avl.selectedNodes.length) {
+                        visualizer.visualizeFind(avl, ctx, avl.selectedNodes[i].element, speed);
+                        setTimeout(function () { loopFind(++i) }, speed*(height-avl.calculateHeight(avl.selectedNodes[i])) + 1000);
+                    }
+                    else {
+                        avl.inOrderNodes().filter(node => node.isSelected).forEach(node => node.changeSelectStatus());
+                        avl.selectedNodes = [];
+                    }
+                };
+                loopFind(0);
+                break;
+            case '2':
+                break;
+            case '3':
+                break;
 
-
-       const draw = (scale, translatePos) => {
-            const context = canvas.getContext('2d');
-            avl.drawScaled(context,scale,translatePos)
+            default:
+                break;
         }
-        scale /= scaleMultiplier;
-        draw(scale, translatePos);
-        console.log('hello');
- */    }
-    /*     window.addEventListener("mouseup", function (evt) {
-            mouseDown = false;
-        });
-    
-        window.addEventListener("mouseover", function (evt) {
-            mouseDown = false;
-        });
-    
-        window.addEventListener("mouseout", function (evt) {
-            mouseDown = false;
-        });
-    
-        window.addEventListener("mousemove", function (evt) {
-            if (mouseDown) {
-                translatePos.x = evt.clientX - startDragOffset.x;
-                translatePos.y = evt.clientY - startDragOffset.y;
-            }
-        });
-     */
-        const algoDisplay = {
-            display:"flex",
-            flexDirection: "row"
-
-        };
+    }
+    const algoDisplay = {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        flexBasis: "23%"
+    };
+    const algoOnChange = (e) => {
+        currentAlgorithm = e.target.value;
+        window.dispatchEvent(new Event('resize')); //redraw canvas, in this case, resize works can also use useContext for canvas.getContext('2d) and avl.draw(context)
+    }
+    const dropDownOptions = {
+        defaultText: "Choose algorithm...",
+        options: [{
+            value: '1',
+            text: 'Find nodes'
+        },
+        {
+            value: '2',
+            text: 'Lowest common ancestor'
+        }, {
+            value: '3',
+            text: 'Tree diameter'
+        }, {
+            value: '4',
+            text: 'Range between nodes'
+        }],
+        onChange: algoOnChange
+    };
     return (
         <header className="App-Header">
-            <div style = {algoDisplay}>
-                <h1>Shortest path</h1>
+            <div style={algoDisplay}>
+                <Dropdown props={dropDownOptions}></Dropdown>
                 <button className="btn" onClick={() => runAlgorithm()}>Run algorithm</button>
 
             </div>
@@ -116,11 +124,11 @@ const Header = React.forwardRef((props, canvasRef) => {
                 <label> {speedSliderProps.max_value} </label>
             </div>
 
-            <div>
+            {/*             <div>
                 <button className="btn" onClick={() => zoomIn()}>+</button>
                 <button className="btn" onClick={() => console.log('hello')}>-</button>
             </div>
-        </header>
+ */}        </header>
     )
 });
 export default Header;

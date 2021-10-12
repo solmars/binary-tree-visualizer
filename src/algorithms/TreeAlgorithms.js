@@ -1,4 +1,4 @@
-export function findNode(elementToFind, node,pathNodes=[]) {
+export function findNode(elementToFind, node, pathNodes = []) {
     if (node === null) {
         return null;
     }
@@ -8,9 +8,9 @@ export function findNode(elementToFind, node,pathNodes=[]) {
         return pathNodes;
     }
     if (node.element > elementToFind) {
-        return findNode(elementToFind, node.left,pathNodes);
+        return findNode(elementToFind, node.left, pathNodes);
     }
     else {
-        return findNode(elementToFind, node.right,pathNodes);
+        return findNode(elementToFind, node.right, pathNodes);
     }
 }

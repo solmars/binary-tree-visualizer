@@ -6,6 +6,8 @@ const Canvas = React.forwardRef((props, ref) => {
   let avl = useContext(AVLContext);
   useEffect(() => {
     const canvas = ref.current;
+    const context = canvas.getContext('2d');
+
     const render = () => {
       avl.draw(context);
     }
@@ -29,8 +31,8 @@ const Canvas = React.forwardRef((props, ref) => {
         }
         render();
       }
+
     };
-    const context = canvas.getContext('2d');
     const handleResize = () => {
       var parent = canvas.parentNode,
         styles = getComputedStyle(parent),

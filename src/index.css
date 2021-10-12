@@ -17,6 +17,7 @@ body {
   flex-direction: column;
   height:100vh;
 }
+
 .App-Header {
   padding-bottom:2px;
   background-color: #303847;
@@ -47,6 +48,13 @@ canvas {
   cursor: pointer;
   font-size: 14px;
   font-family: inherit;
+}
+.dropdown {
+  background:#535B53;
+  border-radius:10px;
+  font-size:18px;
+  font-family:'Times New Roman', Times, serif;
+  white-space:break-all;
 }
 footer {  
   padding-top: 5px;
