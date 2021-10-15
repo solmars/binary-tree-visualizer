@@ -8,7 +8,7 @@ const constants = {
     NODE_PATH_COLOR: 'yellow',
     NODE_SELECTED_COLOR: '#00FFFF',
     NODE_CURRENT_COLOR :'green',
-    MINIMUM_SPEED:20,
+    MINIMUM_SPEED:10,
     MAXIMUM_SPEED:1000
 };
 export default constants;

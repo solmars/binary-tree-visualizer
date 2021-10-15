@@ -1,9 +1,46 @@
 import * as configs from '../models/Config.js';
 import * as algorithms from '../algorithms/TreeAlgorithms.js';
 import { NodeInPath, TYPES } from './NodeInPath.js';
-
+import Node from '../models/Node.js';
 //Assumes node positions are set
 
+
+export function visualizeTreeDiameterPaths(avl, ctx, speed) {
+    const pathObjects = algorithms.treeDiameterPaths(avl.root);
+    const visualizePaths = (i) => {
+        if (i >= pathObjects.length) return;
+        let pathNodes = [];
+        pathObjects[i].path.forEach(node => {
+            pathNodes.push(new NodeInPath(node, TYPES.IN_PATH));
+        });
+        animatePath(avl, ctx, pathNodes, 1, speed, [], [new NodeInPath(pathObjects[i].startNode, TYPES.SOURCE_OR_DESTINATION), new NodeInPath(pathObjects[i].endNode, TYPES.SOURCE_OR_DESTINATION)]);
+        // make it go very fast if user isn't trying to analyze it
+        setTimeout(function() {visualizePaths(++i)}, speed * pathObjects[i].path.length + (speed > 150 ? 1000 : 50));
+    }
+    visualizePaths(0);
+}
+export function visualizeAllBetweenChosenNodes(avl, ctx, speed) {
+    if (avl.selectedNodes.length < 2) {
+        return;
+    }
+    let minNode = new Node(Number.MAX_VALUE);
+    let maxNode = new Node(Number.MIN_VALUE);
+    // find min and max from set of nodes
+    avl.selectedNodes.forEach(node => {
+        if (minNode.element > node.element) {
+            minNode = node;
+        }
+        if (maxNode.element < node.element) {
+            maxNode = node;
+        }
+    });
+    const nodesBetween = algorithms.searchNodesBetween(minNode.element, maxNode.element, avl);
+    const pathNodes = [];
+    nodesBetween.forEach(node => {
+        pathNodes.push(new NodeInPath(node, TYPES.IN_PATH));
+    });
+    animatePath(avl, ctx, pathNodes, 1, speed, [], [new NodeInPath(minNode, TYPES.SOURCE_OR_DESTINATION), new NodeInPath(maxNode, TYPES.SOURCE_OR_DESTINATION)]);
+}
 
 export function visualizeFind(avl, ctx, elementToFind, speed) {
     if (avl.root === null) {
@@ -20,7 +57,7 @@ export function visualizeFind(avl, ctx, elementToFind, speed) {
     animatePath(avl, ctx, pathNodesInPath, 1, speed);
 
 }
-function animatePath(avl, ctx, pathNodes, current, speed) {
+function animatePath(avl, ctx, pathNodes, current, speed, oneByOneArray = [], appendableNodes = []) {
     if (current > pathNodes.length) {
         return;
     }
@@ -30,13 +67,12 @@ function animatePath(avl, ctx, pathNodes, current, speed) {
     if (current > 2) { // no longer the current one
         pathNodes[current - 2].type = TYPES.IN_PATH;
     }
-    const oneByOneArray = [];
-    for (let i = 0; i < current; i++) {
+    for (let i = oneByOneArray.length; i < current; i++) {
         oneByOneArray.push(pathNodes[i]);
     }
-    visualizePath(avl, ctx, oneByOneArray);
+    visualizePath(avl, ctx, [...oneByOneArray, ...appendableNodes]);
     setTimeout(function () {
-        animatePath(avl, ctx, pathNodes, ++current, speed);
+        animatePath(avl, ctx, pathNodes, ++current, speed, oneByOneArray, appendableNodes);
     }, speed[0]);
 
 }

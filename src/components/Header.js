@@ -60,20 +60,31 @@ const Header = React.forwardRef((props, canvasRef) => {
                 const loopFind = (i) => {
                     if (i < avl.selectedNodes.length) {
                         visualizer.visualizeFind(avl, ctx, avl.selectedNodes[i].element, speed);
-                        setTimeout(function () { loopFind(++i) }, speed*(height-avl.calculateHeight(avl.selectedNodes[i])) + 1000);
+                        setTimeout(function () { loopFind(++i) }, speed * (height - avl.calculateHeight(avl.selectedNodes[i])) + 1000);
                     }
-                    else {
+/*                     else {
                         avl.inOrderNodes().filter(node => node.isSelected).forEach(node => node.changeSelectStatus());
                         avl.selectedNodes = [];
                     }
-                };
+ */                };
                 loopFind(0);
                 break;
             case '2':
                 break;
             case '3':
+                visualizer.visualizeTreeDiameterPaths(avl,ctx,speed);
                 break;
 
+            case '4':
+                if (avl.selectedNodes.length < 2) {
+                    alert('Choose at least two nodes!');
+                    return;
+                }
+                visualizer.visualizeAllBetweenChosenNodes(avl, ctx, speed);
+/*                 avl.inOrderNodes().filter(node => node.isSelected).forEach(node => node.changeSelectStatus());
+                avl.selectedNodes = [];
+
+ */                break;
             default:
                 break;
         }
@@ -82,10 +93,12 @@ const Header = React.forwardRef((props, canvasRef) => {
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
-        flexBasis: "23%"
+        flexBasis: "23%",
     };
     const algoOnChange = (e) => {
         currentAlgorithm = e.target.value;
+        avl.inOrderNodes().filter(node => node.isSelected).forEach(node => node.changeSelectStatus());
+        avl.selectedNodes = [];
         window.dispatchEvent(new Event('resize')); //redraw canvas, in this case, resize works can also use useContext for canvas.getContext('2d) and avl.draw(context)
     }
     const dropDownOptions = {
@@ -99,10 +112,10 @@ const Header = React.forwardRef((props, canvasRef) => {
             text: 'Lowest common ancestor'
         }, {
             value: '3',
-            text: 'Tree diameter'
+            text: 'Tree diameter paths'
         }, {
             value: '4',
-            text: 'Range between nodes'
+            text: 'All between chosen nodes'
         }],
         onChange: algoOnChange
     };

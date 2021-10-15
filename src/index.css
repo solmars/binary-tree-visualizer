@@ -49,12 +49,24 @@ canvas {
   font-size: 14px;
   font-family: inherit;
 }
+.btn:hover {
+  background-color:#1882A8;
+}
+.btn:active {
+  transform: scale(0.98);
+}
+
 .dropdown {
   background:#535B53;
   border-radius:10px;
-  font-size:18px;
-  font-family:'Times New Roman', Times, serif;
-  white-space:break-all;
+  font-size:15px;
+  font-family:'Helvetica';
+  white-space:"break-all";
+  color:#fff;
+}
+.dropdown:hover {
+  color:#fff;
+  box-shadow: 0 0 10px 100px #1882A8 inset;
 }
 footer {  
   padding-top: 5px;
